@@ -1,10 +1,21 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import {Module} from '@nestjs/common';
+import {ConfigModule} from '@nestjs/config';
+import {RowsModule} from "./rows/rows.module";
+import { GoogleSheetsModule } from './google-sheets/google-sheets.module';
+import { WebsocketGateway } from './websocket/websocket.gateway';
+
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
+        RowsModule,
+        GoogleSheetsModule,
+    ],
+    providers: [WebsocketGateway]
 })
-export class AppModule {}
+export class AppModule {
+}
+
+
