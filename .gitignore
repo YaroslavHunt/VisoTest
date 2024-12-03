@@ -42,7 +42,6 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
-../service-acc-key.json
 
 # temp directory
 .temp
