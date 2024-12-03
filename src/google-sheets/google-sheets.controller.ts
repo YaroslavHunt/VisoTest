@@ -13,13 +13,10 @@ export class GoogleSheetsController {
         return await this.googleSheetsService.getSheetData(sheetId, range);
     }
 
-    @Post('append')
-    async appendRow(
-        @Query('sheetId') sheetId: string,
-        @Query('range') range: string,
-        @Body() data: { values: any[] },
-    ) {
-        await this.googleSheetsService.appendRow(sheetId, range, data.values);
-        return { message: 'Row added successfully' };
+    @Post('add-row')
+    async addRow(@Body() rowData: string[]) {
+        const sheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+        const range = 'Sheet1!A1:D1';
+        await this.googleSheetsService.appendRow(sheetId, range, rowData);
     }
 }
