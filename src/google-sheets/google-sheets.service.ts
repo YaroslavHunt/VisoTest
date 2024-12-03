@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { google, sheets_v4 } from 'googleapis';
+import {Injectable} from '@nestjs/common';
+import {google, sheets_v4} from 'googleapis';
 import * as path from 'path';
 import * as nodemailer from 'nodemailer';
-import { WebsocketGateway } from '../websocket/websocket.gateway';
+import {WebsocketGateway} from '../websocket/websocket.gateway';
 
 @Injectable()
 export class GoogleSheetsService {
@@ -16,6 +16,19 @@ export class GoogleSheetsService {
         });
 
         this.sheets = google.sheets({ version: 'v4', auth });
+    }
+
+    async getSheetData(sheetId: string, range: string): Promise<any[]> {
+        try {
+            const response = await this.sheets.spreadsheets.values.get({
+                spreadsheetId: sheetId,
+                range,
+            });
+            return response.data.values || [];
+        } catch (error) {
+            console.error('Error fetching sheet data:', error);
+            throw new Error('Unable to fetch sheet data.');
+        }
     }
 
     async appendRow(sheetId: string, range: string, values: any[]): Promise<void> {
